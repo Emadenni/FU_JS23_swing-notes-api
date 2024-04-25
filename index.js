@@ -5,7 +5,7 @@ const swaggerDocs = require('./swaggerConfig'); // Importa il modulo di configur
 const PORT = 3000;
 
 app.use(express.json())
-app.use('api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/swing-notes-api/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 
 app.get('/api', (req, res) => {
