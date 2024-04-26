@@ -14,4 +14,9 @@ try {
 }
 }
 
-module.exports = {storeUser};
+function getUser(username) {
+    return db.findOne({username: username})
+ }
+ 
+
+module.exports = {storeUser, getUser};
