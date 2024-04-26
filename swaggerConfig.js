@@ -9,7 +9,7 @@ const swaggerOptions = {
       description: "API for managing notes.",
     },
   },
-  apis: ["./index.js"],
+  apis: ["./routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);

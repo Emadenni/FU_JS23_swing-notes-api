@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./swaggerConfig'); // Importa il modulo di configurazione Swagger
+const swaggerDocs = require('./swaggerConfig'); 
 const PORT = 3000;
 const userRoutes = require('./routes/user-routes')
 /* const notesRoutes = require('./routes/notes-routes') */
