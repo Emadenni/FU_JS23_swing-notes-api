@@ -18,6 +18,8 @@
  *     responses:
  *       '201':
  *         description: New user added succesfully
+ *       '400':
+ *         description: Username and password are missing or incorrect
  *       '418':
  *         description: Username already exists
  *       '500':
@@ -31,6 +33,6 @@ const router = Router();
 
 
 router.post('/signup', signup)
-/* router.post('/login', login)
- */
+router.post('/login', login)
+
 module.exports = router;

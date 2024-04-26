@@ -1,7 +1,8 @@
 const { createUser } = require("../models/user-model");
 const db = require("./../usersDb");
-const { hashPassword, comparePassword } = require("./../bcrypt");
+const { hashPassword, comparePasswords} = require("./../bcrypt");
 const { v4: uuidv4 } = require("uuid");
+const jwt = require("jsonwebtoken");
 
 async function signup(req, res) {
   const { username, password } = req.body;
@@ -35,6 +36,27 @@ async function signup(req, res) {
 async function login(req, res) {
   const { username, password } = req.body;
   const user = await db.getUser(username);
+
+  if (user == null) {
+    res.status(404).send("User not found");
+    return;
+  }
+
+  try {
+    const validPassword = await comparePasswords(password, user.password);
+
+    if (validPassword) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 30000 });
+      let result = { token: token };
+      res.json(result);
+    } else {
+      res.status(401).send("Wrong password");
+    }
+  } catch (error) {
+    console.error("Error checking password", error);
+    res.status(500).send("Internal server error");
+  }
 }
 
-module.exports = { signup };
+
+module.exports = { signup, login };
