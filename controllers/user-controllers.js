@@ -22,7 +22,7 @@ async function signup(req, res) {
     const hashedPassword = await hashPassword(password);
    await createUser(username, hashedPassword, id);
 
-    res.status(201).send({
+    res.status(200).json({
       status: "success",
       message: "User created successfully",
       userId: id,
@@ -42,15 +42,23 @@ async function login(req, res) {
     return;
   }
 
+  if (!username || !password) {
+    return res.status(400).json({ error: "Username and password are missing or incorrect" });
+  }
+
   try {
     const validPassword = await comparePasswords(password, user.password);
 
     if (validPassword) {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 30000 });
       let result = { token: token };
-      res.json(result);
+      res.status(200).json({
+        status: "success",
+      message: "Login successful",
+      result
+      });
     } else {
-      res.status(401).send("Wrong password");
+      res.status(400).send("Wrong password");
     }
   } catch (error) {
     console.error("Error checking password", error);
