@@ -55,7 +55,7 @@ async function login(req, res) {
       res.status(200).json({
         status: "success",
       message: "Login successful",
-      result
+      token
       });
     } else {
       res.status(400).send("Wrong password");
