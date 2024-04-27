@@ -50,7 +50,7 @@
  * /api/user/login:
  *   post:
  *     summary: Login users
- *     description: Give access to user's account.
+ *     description: Give access to user's account. Generate a token avaible for 10 minutes.  
  *     tags:
  *       - User
  *     requestBody:

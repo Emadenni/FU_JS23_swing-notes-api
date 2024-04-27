@@ -1,4 +1,4 @@
-const { storeNote } = require("./../notesDb")
+const { storeNote, getNotes, getNoteByID } = require("../notesDb");
 
 async function createNote(id, title, text, createdAt, modifiedAt) {
   try {
@@ -19,4 +19,23 @@ async function createNote(id, title, text, createdAt, modifiedAt) {
   }
 }
 
-module.exports = { createNote };
+async function fetchNotes() {
+  try {
+    const allNotes = await getNotes();
+    return allNotes
+  } catch (error) {
+    console.error("Error fetching notes ", error);
+    throw error;
+  }
+}
+
+async function fetchNoteByID(noteID) {
+  try {
+    const noteByID = await getNoteByID(noteID)
+    return noteByID
+  } catch (error) {
+    console.error("Error fetching the note", error);
+    throw error;
+  }
+}
+module.exports = { createNote, fetchNotes, fetchNoteByID };

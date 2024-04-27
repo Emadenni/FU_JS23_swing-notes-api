@@ -1,4 +1,4 @@
-const { storeUser } = require('./../usersDb');
+const { storeUser } = require('../usersDb');
 
 async function createUser(username, password, id) {
     try {
@@ -9,5 +9,6 @@ async function createUser(username, password, id) {
         throw error;
     }
 }
+
 
 module.exports = { createUser };

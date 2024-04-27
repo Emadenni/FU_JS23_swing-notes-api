@@ -59,10 +59,13 @@
 
 
 const { Router } = require("express");
-const { addNote } = require("../controllers/notes-controllers");
+const { addNote, getAllNotes, getSingleNote } = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
 const router = Router();
 
 router.post("/", auth, addNote);
+router.get("/", getAllNotes);
+router.get("/:id",  getSingleNote);
+
 
 module.exports = router;
