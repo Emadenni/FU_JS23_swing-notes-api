@@ -43,14 +43,10 @@
  *           application/json:
  *             example:
  *               message: Error adding user
- */
-
-/**
- * @swagger
  * /api/user/login:
  *   post:
  *     summary: Login users
- *     description: Give access to user's account. Generate a token avaible for 10 minutes.  
+ *     description: Give access to user's account. Generate a token avaible for 10 minutes.
  *     tags:
  *       - User
  *     requestBody:
@@ -92,7 +88,6 @@
  *             example:
  *               message: Internal server error
  */
-
 
 const { Router } = require("express");
 const { signup, login } = require("../controllers/user-controllers");

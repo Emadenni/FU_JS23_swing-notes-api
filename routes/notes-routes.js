@@ -3,7 +3,7 @@
  * /api/notes:
  *   post:
  *     summary: Add a new note
- *     description: Add a new note in the database. Require a valid token to give right to access.
+ *     description: Add a new note in the database.Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
  *     tags:
  *       - Notes
  *     security:
@@ -55,6 +55,78 @@
  *           application/json:
  *             example:
  *               error: "Error adding noted"
+ *   get:
+ *     summary: Get all notes
+ *     description: Retrieve all notes from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved all notes
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: success
+ *               notes:
+ *                 - id: "1"
+ *                   title: "Sample Note 1"
+ *                   text: "This is a sample note 1"
+ *                   createdAt: "2024-04-27T12:00:00Z"
+ *                   modifiedAt: null
+ *                 - id: "2"
+ *                   title: "Sample Note 2"
+ *                   text: "This is a sample note 2"
+ *                   createdAt: "2024-04-27T12:00:00Z"
+ *                   modifiedAt: null
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal server error
+ *
+ * /api/notes/{id}:
+ *   get:
+ *     summary: Get a single note
+ *     description: Retrieve a single note by its ID from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the note to retrieve
+ *     responses:
+ *       '200':
+ *         description: Successfully retrieved the note
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: success
+ *               note:
+ *                 id: "1"
+ *                 title: "Sample Note"
+ *                 text: "This is a sample note"
+ *                 createdAt: "2024-04-27T12:00:00Z"
+ *                 modifiedAt: null
+ *       '404':
+ *         description: Note not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               message: Note not found
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal server error
  */
 
 
@@ -64,8 +136,8 @@ const { auth } = require("./../middleware/auth");
 const router = Router();
 
 router.post("/", auth, addNote);
-router.get("/", getAllNotes);
-router.get("/:id",  getSingleNote);
+router.get("/", auth, getAllNotes);
+router.get("/:id",auth,  getSingleNote);
 
 
 module.exports = router;
