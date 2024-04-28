@@ -129,15 +129,14 @@
  *               error: Internal server error
  */
 
-
 const { Router } = require("express");
-const { addNote, getAllNotes, getSingleNote } = require("../controllers/notes-controllers");
+const { addNote, getAllNotes, getSingleNote, updateSingleNote } = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
 const router = Router();
 
 router.post("/", auth, addNote);
 router.get("/", auth, getAllNotes);
-router.get("/:id",auth,  getSingleNote);
-
+router.get("/:id", auth, getSingleNote);
+router.put("/:id", auth, updateSingleNote);
 
 module.exports = router;

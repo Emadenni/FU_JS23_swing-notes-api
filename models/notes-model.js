@@ -1,4 +1,5 @@
-const { storeNote, getNotes, getNoteByID } = require("../notesDb");
+const { text } = require("express");
+const { storeNote, getNotes, getNoteByID, modifiedNoteByID } = require("../notesDb");
 
 async function createNote(id, title, text, createdAt, modifiedAt) {
   try {
@@ -9,9 +10,6 @@ async function createNote(id, title, text, createdAt, modifiedAt) {
       text,
       createdAt,
       modifiedAt: null,
-      update(newTitle, newText) {
-        (this.title = newTitle), (this.text = newText), (this.modifiedAt = new Date());
-      },
     };
   } catch (error) {
     console.error("Error creating user ", error);
@@ -22,7 +20,7 @@ async function createNote(id, title, text, createdAt, modifiedAt) {
 async function fetchNotes() {
   try {
     const allNotes = await getNotes();
-    return allNotes
+    return allNotes;
   } catch (error) {
     console.error("Error fetching notes ", error);
     throw error;
@@ -31,11 +29,29 @@ async function fetchNotes() {
 
 async function fetchNoteByID(noteID) {
   try {
-    const noteByID = await getNoteByID(noteID)
-    return noteByID
+    const noteByID = await getNoteByID(noteID);
+    return noteByID;
   } catch (error) {
     console.error("Error fetching the note", error);
     throw error;
   }
 }
-module.exports = { createNote, fetchNotes, fetchNoteByID };
+
+async function updateNote(nodeID, newTitle, newText) {
+  try {
+    const noteToUpdate = await getNoteByID(nodeID);
+    console.log(noteToUpdate);
+    if (!noteToUpdate) {
+      return null
+    }
+    noteToUpdate.title = newTitle;
+    noteToUpdate.text = newText;
+    noteToUpdate.modifiedAt = new Date();
+    await modifiedNoteByID(noteToUpdate);
+    return noteToUpdate;
+  } catch (error) {
+    console.error("Error uppdating the note", error);
+    throw error;
+  }
+}
+module.exports = { createNote, fetchNotes, fetchNoteByID, updateNote };

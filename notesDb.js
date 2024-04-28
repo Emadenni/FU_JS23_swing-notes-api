@@ -33,4 +33,12 @@ async function getNoteByID(noteID) {
   }
 }
 
-module.exports = { storeNote, getNotes,getNoteByID };
+async function modifiedNoteByID(noteToUpdate) {
+  try {
+    await db.update({ id: noteToUpdate.id }, noteToUpdate);
+  } catch (error) {
+    console.error("Error modifying note:", error);
+    throw error;
+  }
+}
+module.exports = { storeNote, getNotes, getNoteByID, modifiedNoteByID };

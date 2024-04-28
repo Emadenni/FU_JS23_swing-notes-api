@@ -1,4 +1,4 @@
-const { createNote, fetchNotes, fetchNoteByID } = require("./../models/notes-model");
+const { createNote, fetchNotes, fetchNoteByID, updateNote } = require("./../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
 const { db, getNotes } = require("../notesDb");
 const { json } = require("express");
@@ -34,28 +34,52 @@ async function getAllNotes(req, res) {
   try {
     const allNotes = await fetchNotes();
 
-    res.status(200).json({status: "succes" ,notes: allNotes});
+    res.status(200).json({ status: "succes", notes: allNotes });
   } catch (error) {
     console.error("Error retrieving notes:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Error retrieving notes" });
   }
 }
 
 async function getSingleNote(req, res) {
   try {
     const noteID = req.params.id;
-    const singleNote = await fetchNoteByID(noteID); 
+    const singleNote = await fetchNoteByID(noteID);
 
     if (!singleNote) {
-      return res.status(404).json({ message: 'Note not found' })
+      console.error("Note not found:", error);
+      return res.status(404).json({ error: "Note not found" });
     }
 
     res.status(200).json({ status: "success", note: singleNote });
- 
   } catch (error) {
     console.error("Error retrieving the note:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Error retrieving the note" });
   }
 }
 
-module.exports = { addNote, getAllNotes, getSingleNote };
+async function updateSingleNote(req, res) {
+  try {
+    const noteID = req.params.id;
+    const { newTitle, newText } = req.body;
+
+    if (!newTitle || !newText) {
+      console.error("Title and text are required");
+      return res.status(400).json({ error: "Title and text are required" });
+    }
+
+    const updatedNote = await updateNote(noteID, newTitle, newText);
+
+    if (!updatedNote) {
+      console.error("Note not found");
+      return res.status(404).json({ error: "Note not found" });
+    }
+
+    res.status(200).json({ status: "success", note: updatedNote });
+  } catch (error) {
+    console.error("Error updating single note:", error);
+    res.status(500).json({ error: "Error updating single note" });
+  }
+}
+
+module.exports = { addNote, getAllNotes, getSingleNote, updateSingleNote };
