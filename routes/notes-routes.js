@@ -127,6 +127,65 @@
  *           application/json:
  *             example:
  *               error: Internal server error
+ *   put:
+ *     summary: Update a single note
+ *     description: Update a single note in the database by its ID. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the note to update
+ *       - in: body
+ *         name: Note
+ *         required: true
+ *         description: New title and text for the note
+ *         schema:
+ *           type: object
+ *           properties:
+ *             newTitle:
+ *               type: string
+ *               description: New title for the note
+ *             newText:
+ *               type: string
+ *               description: New text for the note
+ *     responses:
+ *       '200':
+ *         description: Successfully updated the note
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: success
+ *               note:
+ *                 id: "1"
+ *                 title: "Updated Note"
+ *                 text: "This is the updated content of the note"
+ *                 createdAt: "2024-04-27T12:00:00Z"
+ *                 modifiedAt: "2024-04-28T12:00:00Z"
+ *       '400':
+ *         description: Title and text are required
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Title and text are required
+ *       '404':
+ *         description: Note not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Note not found
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Error updating single note
+
  */
 
 const { Router } = require("express");
