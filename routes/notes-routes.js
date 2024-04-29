@@ -185,7 +185,7 @@
  *           application/json:
  *             example:
  *               error: Error updating single note
-*   delete:
+ *   delete:
  *     summary: Delete a single note
  *     description: Delete a single note by its ID from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
  *     tags:
@@ -222,14 +222,20 @@
  */
 
 const { Router } = require("express");
-const { addNote, getAllNotes, getSingleNote, updateSingleNote, deleteSingleNote } = require("../controllers/notes-controllers");
+const {
+  addNote,
+  getAllNotes,
+  getSingleNote,
+  updateSingleNote,
+  deleteSingleNote,
+} = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
 const router = Router();
 
-router.post("/", addNote);
-router.get("/", getAllNotes);
-router.get("/:id",  getSingleNote);
+router.post("/", auth, addNote);
+router.get("/", auth, getAllNotes);
+router.get("/:id", auth, getSingleNote);
 router.put("/:id", auth, updateSingleNote);
-router.delete("/:id", deleteSingleNote)
+router.delete("/:id", auth, deleteSingleNote);
 
 module.exports = router;
