@@ -3,7 +3,7 @@
  * /api/notes:
  *   post:
  *     summary: Add a new note
- *     description: Add a new note in the database.Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
+ *     description: Add a new note to the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
  *     tags:
  *       - Notes
  *     security:
@@ -18,14 +18,14 @@
  *               title:
  *                 type: string
  *                 maxLength: 50
- *                 description: Titolo della nota (massimo 50 caratteri).
+ *                 description: Title of the note (maximum 50 characters).
  *               text:
  *                 type: string
  *                 maxLength: 300
- *                 description: Testo della nota (massimo 300 caratteri).
+ *                 description: Text of the note (maximum 300 characters).
  *     responses:
  *       '200':
- *         description: Note added succesfully
+ *         description: Note added successfully
  *         content:
  *           application/json:
  *             example:
@@ -38,23 +38,24 @@
  *                 createdAt: "2024-04-27T12:00:00Z"
  *                 modifiedAt: null
  *       '400':
- *         description: Bad request
+ *         description: Bad request. Text and title are missing or incorrect.
  *         content:
  *           application/json:
  *             example:
  *               error: "Text and title are missing or incorrect"
  *       '401':
- *         description: Invalid access
+ *         description: Invalid access. Invalid token.
  *         content:
  *           application/json:
  *             example:
  *               error: "Invalid token"
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Error adding note.
  *         content:
  *           application/json:
  *             example:
- *               error: "Error adding noted"
+ *               error: "Error adding note"
+ *
  *   get:
  *     summary: Get all notes
  *     description: Retrieve all notes from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
@@ -81,11 +82,11 @@
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Error retrieving notes.
  *         content:
  *           application/json:
  *             example:
- *               error: Internal server error
+ *               error: "Internal server error"
  *
  * /api/notes/{id}:
  *   get:
@@ -122,11 +123,12 @@
  *             example:
  *               message: Note not found
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Error retrieving note.
  *         content:
  *           application/json:
  *             example:
- *               error: Internal server error
+ *               error: "Internal server error"
+ *
  *   put:
  *     summary: Update a single note
  *     description: Update a single note in the database by its ID. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
@@ -180,11 +182,12 @@
  *             example:
  *               error: Note not found
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Error updating note.
  *         content:
  *           application/json:
  *             example:
- *               error: Error updating single note
+ *               error: "Error updating note"
+ *
  *   delete:
  *     summary: Delete a single note
  *     description: Delete a single note by its ID from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
@@ -206,7 +209,7 @@
  *           application/json:
  *             example:
  *               status: success
- *               message: Number of notes deleted :1
+ *               message: Number of notes deleted:1
  *       '404':
  *         description: Note not found
  *         content:
@@ -214,12 +217,73 @@
  *             example:
  *               error: Note not found
  *       '500':
- *         description: Internal server error
+ *         description: Internal server error. Error deleting note.
  *         content:
  *           application/json:
  *             example:
- *               error: Internal server error
+ *               error: "Internal server error"
+ *
+ * /api/notes/search:
+ *   get:
+ *     summary: Search among notes by title
+ *     description: |
+ *       Searches among notes in the database based on the provided title. The search is case-insensitive.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The title to search for. The search is case-insensitive.
+ *     responses:
+ *       '200':
+ *         description: A list of notes matching the search criteria.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 result:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Note'
+ *             example:
+ *               status: success
+ *               result:
+ *                 - id: "1"
+ *                   title: "Found Note"
+ *                   text: "This is the result"
+ *                   createdAt: "2024-04-27T12:00:00Z"
+ *                   modifiedAt: "2024-04-28T12:00:00Z"
+ *       '400':
+ *         description: Bad request. The 'title' parameter is missing or empty.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Title parameter is required and cannot be empty
+ *       '500':
+ *         description: Internal server error. Error searching notes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Error searching notes
  */
+
 
 const { Router } = require("express");
 const {
