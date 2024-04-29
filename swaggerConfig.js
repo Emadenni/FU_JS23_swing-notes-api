@@ -6,7 +6,7 @@ const swaggerOptions = {
     info: {
       title: "Swing Notes API",
       version: "1.0.0",
-      description: "API for managing notes.",
+      description: "API for notes-managing.",
     },
   },
   apis: ["./routes/*.js"],

@@ -41,4 +41,15 @@ async function modifiedNoteByID(noteToUpdate) {
     throw error;
   }
 }
-module.exports = { storeNote, getNotes, getNoteByID, modifiedNoteByID };
+
+async function removeNoteByID(noteToDelete) {
+  try {
+    const numRemoved = await db.remove({ id: noteToDelete.id });
+    return numRemoved; 
+  } catch (error) {
+    console.error("Error deleting note:", error);
+    throw error;
+  }
+}
+
+module.exports = { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID };

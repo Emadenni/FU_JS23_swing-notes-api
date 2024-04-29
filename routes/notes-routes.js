@@ -185,17 +185,51 @@
  *           application/json:
  *             example:
  *               error: Error updating single note
-
+*   delete:
+ *     summary: Delete a single note
+ *     description: Delete a single note by its ID from the database. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the note to delete
+ *     responses:
+ *       '200':
+ *         description: Successfully deleted the note
+ *         content:
+ *           application/json:
+ *             example:
+ *               status: success
+ *               message: Number of notes deleted :1
+ *       '404':
+ *         description: Note not found
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Note not found
+ *       '500':
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Internal server error
  */
 
 const { Router } = require("express");
-const { addNote, getAllNotes, getSingleNote, updateSingleNote } = require("../controllers/notes-controllers");
+const { addNote, getAllNotes, getSingleNote, updateSingleNote, deleteSingleNote } = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
 const router = Router();
 
-router.post("/", auth, addNote);
-router.get("/", auth, getAllNotes);
-router.get("/:id", auth, getSingleNote);
+router.post("/", addNote);
+router.get("/", getAllNotes);
+router.get("/:id",  getSingleNote);
 router.put("/:id", auth, updateSingleNote);
+router.delete("/:id", deleteSingleNote)
 
 module.exports = router;

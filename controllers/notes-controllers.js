@@ -1,4 +1,4 @@
-const { createNote, fetchNotes, fetchNoteByID, updateNote } = require("./../models/notes-model");
+const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("./../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
 const { db, getNotes } = require("../notesDb");
 const { json } = require("express");
@@ -82,4 +82,20 @@ async function updateSingleNote(req, res) {
   }
 }
 
-module.exports = { addNote, getAllNotes, getSingleNote, updateSingleNote };
+async function deleteSingleNote(req, res) {
+  try {
+    const nodeID = req.params.id;
+
+    const deletedNote = await deleteNote(nodeID);
+
+    if (!deletedNote) {
+      console.error("Note not found");
+      return res.status(404).json({ error: "Note not found" });
+    }
+    res.status(200).json({ status: "success", message: `number of notes deleted : ${deletedNote} ` });
+  } catch (error) {
+    console.error("Error deleting single note:", error);
+    res.status(500).json({ error: "Error deleting single note" });
+  }
+}
+module.exports = { addNote, getAllNotes, getSingleNote, updateSingleNote, deleteSingleNote };
