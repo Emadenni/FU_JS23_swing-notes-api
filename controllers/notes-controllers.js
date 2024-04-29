@@ -1,4 +1,4 @@
-const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("./../models/notes-model");
+const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
 const { db, getNotes } = require("../notesDb");
 const { json } = require("express");

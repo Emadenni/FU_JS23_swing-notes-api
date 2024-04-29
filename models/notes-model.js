@@ -58,7 +58,7 @@ async function updateNote(nodeID, newTitle, newText) {
 async function deleteNote(nodeID) {
   try {
     const noteToDelete = await getNoteByID(nodeID);
-    console.log(noteToDelete);
+
     if (!noteToDelete) {
       return null;
     }

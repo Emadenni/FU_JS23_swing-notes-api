@@ -230,12 +230,14 @@ const {
   deleteSingleNote,
 } = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
+const { searchAmongNotes } = require("../controllers/search-controller");
 const router = Router();
 
-router.post("/", auth, addNote);
-router.get("/", auth, getAllNotes);
-router.get("/:id", auth, getSingleNote);
-router.put("/:id", auth, updateSingleNote);
-router.delete("/:id", auth, deleteSingleNote);
+router.post("/", /* auth */ addNote);
+router.get("/",  getAllNotes);
+router.get("/:id", );
+router.put("/:id",  updateSingleNote);
+router.delete("/:id",deleteSingleNote);
+router.get("/search", searchAmongNotes)
 
 module.exports = router;

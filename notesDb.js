@@ -45,11 +45,29 @@ async function modifiedNoteByID(noteToUpdate) {
 async function removeNoteByID(noteToDelete) {
   try {
     const numRemoved = await db.remove({ id: noteToDelete.id });
-    return numRemoved; 
+    return numRemoved;
   } catch (error) {
     console.error("Error deleting note:", error);
     throw error;
   }
 }
 
-module.exports = { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID };
+async function searchNotesByTitle(query) {
+  try {
+    const notes = await db.find(query);
+
+    return notes;
+  } catch (error) {
+    console.error("Error searching notes:", error);
+    throw error;
+  }
+}
+
+module.exports = {
+  storeNote,
+  getNotes,
+  getNoteByID,
+  modifiedNoteByID,
+  removeNoteByID,
+  searchNotesByTitle,
+};
