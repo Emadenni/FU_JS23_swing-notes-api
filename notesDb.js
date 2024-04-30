@@ -26,9 +26,9 @@ async function getNotes() {
 async function getNoteByID(noteID) {
   try {
     const noteByID = await db.findOne({ id: noteID });
-    return noteByID;
+    return noteByID || null;
   } catch (error) {
-    console.error("Note not stored correctly");
+    console.error("Error getting not");
     throw error;
   }
 }

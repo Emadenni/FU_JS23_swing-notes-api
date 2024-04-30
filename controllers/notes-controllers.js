@@ -6,16 +6,16 @@ const { json } = require("express");
 async function addNote(req, res) {
   const { title, text } = req.body;
 
+  if (!title || !text) {
+    return res.status(400).json({ error: "Text and title are missing or incorrect" });
+  }
+
   if (title.length > 50) {
-    return res.status(400).json({ error: "The title of the note must be at most 50 characters long" });
+    return res.status(422).json({ error: "The title of the note must be at most 50 characters long" });
   }
 
   if (text.length > 300) {
-    return res.status(400).json({ error: "The text of the note must be at most 300 characters long" });
-  }
-
-  if (!title || !text) {
-    return res.status(400).json({ error: "Text and title are missing or incorrect" });
+    return res.status(422).json({ error: "The text of the note must be at most 300 characters long" });
   }
 
   try {
@@ -34,6 +34,10 @@ async function getAllNotes(req, res) {
   try {
     const allNotes = await fetchNotes();
 
+    if (allNotes.length === 0) {
+      return res.status(404).json({ error: "No notes found" });
+    }
+
     res.status(200).json({ status: "succes", notes: allNotes });
   } catch (error) {
     console.error("Error retrieving notes:", error);
@@ -46,8 +50,8 @@ async function getSingleNote(req, res) {
     const noteID = req.params.id;
     const singleNote = await fetchNoteByID(noteID);
 
-    if (!singleNote) {
-      console.error("Note not found:", error);
+    if (singleNote === null) {
+      console.error("Note not found with ID:", noteID);
       return res.status(404).json({ error: "Note not found" });
     }
 
@@ -84,6 +88,10 @@ async function updateSingleNote(req, res) {
 
 async function deleteSingleNote(req, res) {
   try {
+    
+    if (!req.params.id) {
+      return res.status(400).json({ error: "Missing ID parameter" });
+    }
     const nodeID = req.params.id;
 
     const deletedNote = await deleteNote(nodeID);

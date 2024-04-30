@@ -5,7 +5,7 @@ const auth = (req, res, next) => {
   const token = req.header("Authorization");
 
   if (!token) {
-    return res.status(400).json({ message: "Access denied! Token is required" });
+    return res.status(401).json({ message: "Access denied! Token is required" });
   }
 
   try {

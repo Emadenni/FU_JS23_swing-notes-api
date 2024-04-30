@@ -43,12 +43,18 @@
  *           application/json:
  *             example:
  *               error: "Text and title are missing or incorrect"
+ *       '422':
+ *         description: The title is longer than 50 characters.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "The title of the note must be at most 50 characters long"
  *       '401':
  *         description: Invalid access. Invalid token.
  *         content:
  *           application/json:
  *             example:
- *               error: "Invalid token"
+ *               error: "Access denied! Token is required"
  *       '500':
  *         description: Internal server error. Error adding note.
  *         content:
@@ -76,11 +82,25 @@
  *                   text: "This is a sample note 1"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
+ *                   _id: "avb123" 
  *                 - id: "2"
  *                   title: "Sample Note 2"
  *                   text: "This is a sample note 2"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
+ *                   _id: "avb123"
+ *       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
+ *       '404':
+ *         description: No notes found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "No notes found"
  *       '500':
  *         description: Internal server error. Error retrieving notes.
  *         content:
@@ -111,11 +131,18 @@
  *             example:
  *               status: success
  *               note:
- *                 id: "1"
- *                 title: "Sample Note"
- *                 text: "This is a sample note"
- *                 createdAt: "2024-04-27T12:00:00Z"
- *                 modifiedAt: null
+*                 - id: "1"
+ *                   title: "Sample Note 1"
+ *                   text: "This is a sample note 1"
+ *                   createdAt: "2024-04-27T12:00:00Z"
+ *                   modifiedAt: null
+ *                   _id: "avb123" 
+ *       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
  *       '404':
  *         description: Note not found
  *         content:
@@ -127,7 +154,7 @@
  *         content:
  *           application/json:
  *             example:
- *               error: "Internal server error"
+ *               error: "Error retrieving the note"
  *
  *   put:
  *     summary: Update a single note
@@ -175,6 +202,12 @@
  *           application/json:
  *             example:
  *               error: Title and text are required
+  *       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
  *       '404':
  *         description: Note not found
  *         content:
@@ -211,6 +244,18 @@
  *             example:
  *               status: success
  *               message: Number of notes deleted:1
+*       '400':
+ *         description: Missing ID parameter.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Missing ID parameter"
+*       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
  *       '404':
  *         description: Note not found
  *         content:
@@ -273,6 +318,12 @@
  *                 error:
  *                   type: string
  *                   example: Title parameter is required and cannot be empty
+  *       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
  *       '500':
  *         description: Internal server error. Error searching notes.
  *         content:
@@ -284,7 +335,6 @@
  *                   type: string
  *                   example: Error searching notes
  */
-
 
 const { Router } = require("express");
 const {
@@ -298,11 +348,11 @@ const { auth } = require("./../middleware/auth");
 const { searchAmongNotes } = require("../controllers/search-controller");
 const router = Router();
 
-router.post("/", /* auth */ addNote);
-router.get("/",  getAllNotes);
-router.get("/:id", getSingleNote);
-router.put("/:id",  updateSingleNote);
-router.delete("/:id",deleteSingleNote);
-router.get("/search", searchAmongNotes)
+router.get("/search", auth, searchAmongNotes);
+router.post("/", auth, addNote);
+router.get("/", auth, getAllNotes);
+router.get("/:id", auth, getSingleNote);
+router.put("/:id", auth, updateSingleNote);
+router.delete("/:id", auth, deleteSingleNote);
 
 module.exports = router;

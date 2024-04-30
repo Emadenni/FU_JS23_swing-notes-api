@@ -30,7 +30,8 @@ async function fetchNotes() {
 async function fetchNoteByID(noteID) {
   try {
     const noteByID = await getNoteByID(noteID);
-    return noteByID;
+
+    return noteByID || null;
   } catch (error) {
     console.error("Error fetching the note", error);
     throw error;
@@ -42,7 +43,7 @@ async function updateNote(nodeID, newTitle, newText) {
     const noteToUpdate = await getNoteByID(nodeID);
     console.log(noteToUpdate);
     if (!noteToUpdate) {
-      return null
+      return null;
     }
     noteToUpdate.title = newTitle;
     noteToUpdate.text = newText;
@@ -57,6 +58,10 @@ async function updateNote(nodeID, newTitle, newText) {
 
 async function deleteNote(nodeID) {
   try {
+    if (!nodeID) {
+     return null
+    }
+
     const noteToDelete = await getNoteByID(nodeID);
 
     if (!noteToDelete) {
