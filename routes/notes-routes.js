@@ -202,6 +202,7 @@
  *         schema:
  *           type: string
  *         description: ID of the note to delete
+  
  *     responses:
  *       '200':
  *         description: Successfully deleted the note
@@ -223,7 +224,7 @@
  *             example:
  *               error: "Internal server error"
  *
- * /api/notes/search:
+* /api/notes/search:
  *   get:
  *     summary: Search among notes by title
  *     description: |
@@ -299,7 +300,7 @@ const router = Router();
 
 router.post("/", /* auth */ addNote);
 router.get("/",  getAllNotes);
-router.get("/:id", );
+router.get("/:id", getSingleNote);
 router.put("/:id",  updateSingleNote);
 router.delete("/:id",deleteSingleNote);
 router.get("/search", searchAmongNotes)

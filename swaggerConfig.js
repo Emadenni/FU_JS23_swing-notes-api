@@ -8,6 +8,7 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API for notes-managing.",
     },
+    
   },
   apis: ["./routes/*.js"],
 };
