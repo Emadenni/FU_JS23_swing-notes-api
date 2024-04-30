@@ -88,11 +88,12 @@ async function updateSingleNote(req, res) {
 
 async function deleteSingleNote(req, res) {
   try {
+    const nodeID = req.params.id;
     
-    if (!req.params.id) {
+    if (!nodeID) {
+      console.log("Missing ID parameter");
       return res.status(400).json({ error: "Missing ID parameter" });
     }
-    const nodeID = req.params.id;
 
     const deletedNote = await deleteNote(nodeID);
 

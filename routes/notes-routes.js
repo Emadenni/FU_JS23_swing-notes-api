@@ -245,13 +245,7 @@
  *             example:
  *               status: success
  *               message: Number of notes deleted:1
-*       '400':
- *         description: Missing ID parameter.
- *         content:
- *           application/json:
- *             example:
- *               error: "Missing ID parameter"
-*       '401':
+ *       '401':
  *         description: Invalid access. Invalid token.
  *         content:
  *           application/json:
