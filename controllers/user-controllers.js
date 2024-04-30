@@ -16,6 +16,10 @@ async function signup(req, res) {
     return res.status(400).json({ error: "Username and password are missing or incorrect" });
   }
 
+  if (password.length < 8) {
+    return res.status(422).json({ error: "Password must be at least 8 characters long" });
+  }
+
   try {
     const id = uuidv4();
     const hashedPassword = await hashPassword(password);
@@ -34,15 +38,15 @@ async function signup(req, res) {
 
 async function login(req, res) {
   const { username, password } = req.body;
-  const user = await db.getUser(username);
-
-  if (user == null) {
-    res.status(404).send("User not found");
-    return;
-  }
 
   if (!username || !password) {
     return res.status(400).json({ error: "Username and password are missing or incorrect" });
+  }
+  const user = await db.getUser(username);
+
+  if (!user) {
+    res.status(404).send("User not found");
+    return;
   }
 
   try {
@@ -57,13 +61,12 @@ async function login(req, res) {
         token,
       });
     } else {
-      res.status(400).send("Wrong password");
+      res.status(401).send("Wrong password");
     }
   } catch (error) {
     console.error("Error checking password", error);
     res.status(500).send("Internal server error");
   }
 }
-
 
 module.exports = { signup, login };

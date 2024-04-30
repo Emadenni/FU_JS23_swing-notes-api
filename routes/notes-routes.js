@@ -196,6 +196,7 @@
  *                 text: "This is the updated content of the note"
  *                 createdAt: "2024-04-27T12:00:00Z"
  *                 modifiedAt: "2024-04-28T12:00:00Z"
+ *                 _id: "avb123" 
  *       '400':
  *         description: Title and text are required
  *         content:
@@ -284,7 +285,7 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: The title to search for. The search is case-insensitive.
+ *         description: The title to search for.(ex. /search?title=query)
  *     responses:
  *       '200':
  *         description: A list of notes matching the search criteria.
@@ -308,6 +309,7 @@
  *                   text: "This is the result"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: "2024-04-28T12:00:00Z"
+ *                   _id: "avb123" 
  *       '400':
  *         description: Bad request. The 'title' parameter is missing or empty.
  *         content:
@@ -324,6 +326,12 @@
  *           application/json:
  *             example:
  *               error: "Access denied! Token is required"
+  *       '404':
+ *         description: No notes found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "No notes found"
  *       '500':
  *         description: Internal server error. Error searching notes.
  *         content:

@@ -12,7 +12,7 @@ async function searchAmongNotes(req, res) {
     const researchResult = await searchNotesByTitle(query);
 
     if (researchResult.length === 0) {
-      return res.status(200).json({ message: "No notes foun" });
+      return res.status(404).json({ message: "No notes found" });
     }
 
     res.status(200).json({ status: "success", result: researchResult });

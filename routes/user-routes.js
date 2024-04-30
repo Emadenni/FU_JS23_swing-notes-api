@@ -25,6 +25,7 @@
  *             example:
  *               status: success
  *               message: User created successfully
+ *               userId: "cc4c70c6-3a50-49bc-b631"
  *       '400':
  *         description: Username and password are missing or incorrect
  *         content:
@@ -37,6 +38,12 @@
  *           application/json:
  *             example:
  *               error: Username already exists
+ *       '422':
+ *         description: Password must be at least 8 characters long
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Password must be at least 8 characters long
  *       '500':
  *         description: Error adding user
  *         content:
@@ -81,6 +88,12 @@
  *           application/json:
  *             example:
  *               error: Username and password are missing or incorrect
+ *       '401':
+ *         description: Wrong password
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: Wrong password!
  *       '500':
  *         description: Internal server error
  *         content:
