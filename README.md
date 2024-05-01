@@ -23,6 +23,10 @@ http://localhost:3001/api/api-docs/
 | /api/user         | POST   | Create an account           |
 | /api/user         | POST   | Login                       |
 
+## Postman 
+
+You can find the Postman json file to import the collection among the repository's files.
+
 ## License
 
 GNU GENERAL PUBLIC LICENSE
