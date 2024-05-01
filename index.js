@@ -3,7 +3,7 @@ console.log(process.env.BASE_URL);
 const express = require("express");
 const app = express();
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocs = require("./swaggerConfig");
+const swaggerDocs = require("./utils/swaggerConfig");
 const userRoutes = require("./routes/user-routes");
 const notesRoutes = require("./routes/notes-routes");
 

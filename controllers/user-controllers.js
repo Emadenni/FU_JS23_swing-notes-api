@@ -1,6 +1,6 @@
 const { createUser } = require("../models/user-model");
-const db = require("../usersDb");
-const { hashPassword, comparePasswords } = require("./../bcrypt");
+const db = require("../database/usersDb");
+const { hashPassword, comparePasswords } = require("./../utils/bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const jwt = require("jsonwebtoken");
 

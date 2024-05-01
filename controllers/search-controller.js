@@ -1,4 +1,4 @@
-const { searchNotesByTitle } = require("../notesDb");
+const { searchNotesByTitle } = require("../database/notesDb");
 
 async function searchAmongNotes(req, res) {
   try {

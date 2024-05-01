@@ -1,6 +1,6 @@
 const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
-const { db, getNotes } = require("../notesDb");
+const { db, getNotes } = require("../database/notesDb");
 const { json } = require("express");
 
 async function addNote(req, res) {

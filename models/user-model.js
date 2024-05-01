@@ -1,4 +1,4 @@
-const { storeUser } = require('../usersDb');
+const { storeUser } = require('../database/usersDb');
 
 async function createUser(username, password, id) {
     try {

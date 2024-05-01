@@ -1,5 +1,5 @@
 const { text } = require("express");
-const { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID } = require("../notesDb");
+const { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID } = require("../database/notesDb");
 
 async function createNote(id, title, text, createdAt, modifiedAt) {
   try {
