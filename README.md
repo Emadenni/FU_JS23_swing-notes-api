@@ -10,11 +10,6 @@ Project creation of a REST API for educational purposes aimed at managing and st
 
 http://localhost:3001/api/api-docs/
 
-## Postman colection : 
-
-### import this url in postman: 
-https://api.postman.com/collections/34011859-b9b6dba4-0305-43f5-a6a7-f194830d4183?access_key=PMAT-01HWSS0036C6BAZCW6W8RG04M6
-
 ## Endpoints
 
 | endpoint          | method | description                 |
@@ -37,4 +32,4 @@ Version 3, 29 June 2007
 
 Emanuele De Negri
 Student FU_23
-JavaSript developer
+JavaScript developer
