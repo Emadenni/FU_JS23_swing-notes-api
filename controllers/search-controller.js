@@ -22,11 +22,12 @@ async function searchAmongNotes(req, res) {
     res.status(500).json({ error: "Error searching notes" });
   }
 }
+
+
 async function searchAmongNotesByUser(req, res) {
   try {
     const { user } = req.query;
 
-    // Verifica se l'utente è presente nel database
     if (!user || user.trim() === "") {
       return res.status(400).json({ error: "User parameter is required and cannot be empty" });
     }

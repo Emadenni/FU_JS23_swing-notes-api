@@ -1,7 +1,6 @@
 const nedb = require("nedb-promise");
-const { v4: uuidv4 } = require("uuid");
-
 const db = new nedb({ filename: "./database/users.db", autoload: true });
+
 
 async function storeUser(username, password, id) {
   try {
@@ -13,7 +12,8 @@ async function storeUser(username, password, id) {
   }
 }
 
-function getUser(username) {
+
+async function getUser(username) {
   return db.findOne({ username: username });
 }
 

@@ -1,9 +1,6 @@
 const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
 
-/* const { db, getNotes } = require("../database/notesDb"); */
-const { json } = require("express");
-const { auth } = require("../middleware/auth");
 
 async function addNote(req, res) {
   const { title, text } = req.body;
@@ -36,6 +33,7 @@ async function addNote(req, res) {
   }
 }
 
+
 async function getAllNotes(req, res) {
   try {
     const allNotes = await fetchNotes();
@@ -50,6 +48,7 @@ async function getAllNotes(req, res) {
     res.status(500).json({ error: "Error retrieving notes" });
   }
 }
+
 
 async function getSingleNote(req, res) {
   try {
@@ -67,6 +66,7 @@ async function getSingleNote(req, res) {
     res.status(500).json({ error: "Error retrieving the note" });
   }
 }
+
 
 async function updateSingleNote(req, res) {
   try {
@@ -91,6 +91,7 @@ async function updateSingleNote(req, res) {
     res.status(500).json({ error: "Error updating single note" });
   }
 }
+
 
 async function deleteSingleNote(req, res) {
   try {

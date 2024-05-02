@@ -1,3 +1,25 @@
+const { Router } = require("express");
+const {
+  addNote,
+  getAllNotes,
+  getSingleNote,
+  updateSingleNote,
+  deleteSingleNote,
+} = require("../controllers/notes-controllers");
+const { auth } = require("./../middleware/auth");
+const { searchAmongNotes, searchAmongNotesByUser } = require("../controllers/search-controller");
+const router = Router();
+
+router.get("/search", auth, searchAmongNotes);
+router.get("/searchByUSer", auth, searchAmongNotesByUser);
+router.post("/", auth, addNote);
+router.get("/", auth, getAllNotes);
+router.get("/:id", auth, getSingleNote);
+router.put("/:id", auth, updateSingleNote);
+router.delete("/:id", auth, deleteSingleNote);
+
+module.exports = router;
+
 /**
  * @swagger
  * /api/notes:
@@ -420,24 +442,6 @@
  *                   example: Error searching notes
  */
 
-const { Router } = require("express");
-const {
-  addNote,
-  getAllNotes,
-  getSingleNote,
-  updateSingleNote,
-  deleteSingleNote,
-} = require("../controllers/notes-controllers");
-const { auth } = require("./../middleware/auth");
-const { searchAmongNotes, searchAmongNotesByUser } = require("../controllers/search-controller");
-const router = Router();
 
-router.get("/search", auth, searchAmongNotes);
-router.get("/searchByUSer", auth, searchAmongNotesByUser);
-router.post("/", auth, addNote);
-router.get("/", auth, getAllNotes);
-router.get("/:id", auth, getSingleNote);
-router.put("/:id", auth, updateSingleNote);
-router.delete("/:id", auth, deleteSingleNote);
 
-module.exports = router;
+

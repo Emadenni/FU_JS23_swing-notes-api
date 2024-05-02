@@ -1,6 +1,7 @@
 const { text } = require("express");
 const { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID } = require("../database/notesDb");
 
+
 async function createNote(id, title, text, createdAt, modifiedAt, user) {
   try {
     await storeNote(id, title, text, createdAt, modifiedAt, user);
@@ -18,6 +19,7 @@ async function createNote(id, title, text, createdAt, modifiedAt, user) {
   }
 }
 
+
 async function fetchNotes() {
   try {
     const allNotes = await getNotes();
@@ -27,6 +29,7 @@ async function fetchNotes() {
     throw error;
   }
 }
+
 
 async function fetchNoteByID(noteID) {
   try {
@@ -38,6 +41,7 @@ async function fetchNoteByID(noteID) {
     throw error;
   }
 }
+
 
 async function updateNote(nodeID, newTitle, newText) {
   try {
@@ -65,6 +69,7 @@ async function updateNote(nodeID, newTitle, newText) {
   }
 }
 
+
 async function deleteNote(nodeID) {
   try {
     if (!nodeID) {
@@ -85,4 +90,5 @@ async function deleteNote(nodeID) {
     throw error;
   }
 }
+
 module.exports = { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote };

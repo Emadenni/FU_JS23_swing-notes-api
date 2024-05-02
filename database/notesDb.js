@@ -1,7 +1,7 @@
 const nedb = require("nedb-promise");
-const { v4: uuidv4 } = require("uuid");
-
 const db = new nedb({ filename: "./database/notes.db", autoload: true });
+
+
 async function storeNote(id, title, text, createdAt, modifiedAt, user) {
 try {
     const note = { id, title, text, createdAt, modifiedAt,user };
@@ -11,6 +11,7 @@ try {
     throw error;
   }
 }
+
 
 async function getNotes() {
   try {
@@ -22,6 +23,8 @@ async function getNotes() {
     throw error;
   }
 }
+
+
 async function getNoteByID(noteID) {
   try {
     const noteByID = await db.findOne({ id: noteID });
@@ -31,9 +34,12 @@ async function getNoteByID(noteID) {
     throw error;
   }
 }
+
+
 async function getNotesByUser(user) {
   try {
     const noteByUser = await db.findOne({ user: user });
+
     return noteByUser || null;
   } catch (error) {
     console.error("Error getting notes");
@@ -50,15 +56,18 @@ async function modifiedNoteByID(noteToUpdate) {
   }
 }
 
+
 async function removeNoteByID(noteToDelete) {
   try {
     const numRemoved = await db.remove({ id: noteToDelete.id });
+
     return numRemoved;
   } catch (error) {
     console.error("Error deleting note:", error);
     throw error;
   }
 }
+
 
 async function searchNotesByQuery(query) {
   try {

@@ -1,6 +1,5 @@
-// bcrypt.js
-
 const bcrypt = require("bcryptjs");
+
 
 async function hashPassword(password) {
   try {
@@ -12,6 +11,7 @@ async function hashPassword(password) {
     throw error;
   }
 }
+
 
 async function comparePasswords(plainPassword, hashedPassword) {
   try {
