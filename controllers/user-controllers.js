@@ -8,12 +8,12 @@ async function signup(req, res) {
   const { username, password } = req.body;
   const existingUser = await db.getUser(username);
 
-  if (existingUser) {
-    return res.status(418).json({ error: "Username already exists" });
-  }
-
   if (!username || !password) {
     return res.status(400).json({ error: "Username and password are missing or incorrect" });
+  }
+
+  if (existingUser) {
+    return res.status(418).json({ error: "Username already exists" });
   }
 
   if (password.length < 8) {
@@ -53,7 +53,7 @@ async function login(req, res) {
     const validPassword = await comparePasswords(password, user.password);
 
     if (validPassword) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 30000 });
+      const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: 600 });
       let result = { token: token };
       res.status(200).json({
         status: "success",

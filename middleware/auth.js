@@ -10,7 +10,9 @@ const auth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token.replace('Bearer ', ''), process.env.JWT_SECRET);
-    req.user = decoded.user;
+    
+   req.user = decoded.username;
+   console.log("Decoded token payload:", req.user);
     next();
   } catch (error) {
     console.error("Invalid token:", error);

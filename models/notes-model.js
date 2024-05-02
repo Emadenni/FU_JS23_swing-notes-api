@@ -1,15 +1,16 @@
 const { text } = require("express");
 const { storeNote, getNotes, getNoteByID, modifiedNoteByID, removeNoteByID } = require("../database/notesDb");
 
-async function createNote(id, title, text, createdAt, modifiedAt) {
+async function createNote(id, title, text, createdAt, modifiedAt, user) {
   try {
-    await storeNote(id, title, text, createdAt, modifiedAt);
+    await storeNote(id, title, text, createdAt, modifiedAt, user);
     return {
       id,
       title,
       text,
       createdAt,
       modifiedAt: null,
+      user
     };
   } catch (error) {
     console.error("Error creating user ", error);
@@ -41,14 +42,17 @@ async function fetchNoteByID(noteID) {
 async function updateNote(nodeID, newTitle, newText) {
   try {
     const noteToUpdate = await getNoteByID(nodeID);
-    console.log(noteToUpdate);
+  
     if (!noteToUpdate) {
       return null;
     }
+
     noteToUpdate.title = newTitle;
     noteToUpdate.text = newText;
     noteToUpdate.modifiedAt = new Date();
+
     await modifiedNoteByID(noteToUpdate);
+
     return noteToUpdate;
   } catch (error) {
     console.error("Error uppdating the note", error);
@@ -58,6 +62,7 @@ async function updateNote(nodeID, newTitle, newText) {
 
 async function deleteNote(nodeID) {
   try {
+
     if (!nodeID) {
      return null
     }
@@ -69,7 +74,7 @@ async function deleteNote(nodeID) {
     }
 
     const deletedNote = await removeNoteByID(noteToDelete);
-    console.log(deletedNote);
+    
     return deletedNote;
   } catch (error) {
     console.error("Error deleting the note", error);

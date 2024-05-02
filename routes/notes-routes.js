@@ -37,6 +37,7 @@
  *                 text: "This is a sample note"
  *                 createdAt: "2024-04-27T12:00:00Z"
  *                 modifiedAt: null
+ *                 user: "username" 
  *       '400':
  *         description: Bad request. Text and title are missing or incorrect.
  *         content:
@@ -82,13 +83,15 @@
  *                   text: "This is a sample note 1"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
+ *                   user: "username" 
  *                   _id: "avb123" 
  *                 - id: "2"
  *                   title: "Sample Note 2"
  *                   text: "This is a sample note 2"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
- *                   _id: "avb123"
+ *                   user: "username" 
+ *                   _id: "avb123" 
  *       '401':
  *         description: Invalid access. Invalid token.
  *         content:
@@ -136,6 +139,7 @@
  *                   text: "This is a sample note 1"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: null
+ *                   user: "username" 
  *                   _id: "avb123" 
  *       '401':
  *         description: Invalid access. Invalid token.
@@ -196,6 +200,7 @@
  *                 text: "This is the updated content of the note"
  *                 createdAt: "2024-04-27T12:00:00Z"
  *                 modifiedAt: "2024-04-28T12:00:00Z"
+ *                 user: "username" 
  *                 _id: "avb123" 
  *       '400':
  *         description: Title and text are required
@@ -303,6 +308,7 @@
  *                   text: "This is the result"
  *                   createdAt: "2024-04-27T12:00:00Z"
  *                   modifiedAt: "2024-04-28T12:00:00Z"
+ *                   user: "username" 
  *                   _id: "avb123" 
  *       '400':
  *         description: Bad request. The 'title' parameter is missing or empty.

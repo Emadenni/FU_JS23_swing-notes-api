@@ -1,7 +1,9 @@
 const { createNote, fetchNotes, fetchNoteByID, updateNote, deleteNote } = require("../models/notes-model");
 const { v4: uuidv4 } = require("uuid");
-const { db, getNotes } = require("../database/notesDb");
+
+/* const { db, getNotes } = require("../database/notesDb"); */
 const { json } = require("express");
+const { auth } = require("../middleware/auth");
 
 async function addNote(req, res) {
   const { title, text } = req.body;
@@ -22,7 +24,11 @@ async function addNote(req, res) {
     const id = uuidv4();
     const createdAt = new Date();
     const modifiedAt = null;
-    const note = await createNote(id, title, text, createdAt, modifiedAt);
+
+    const user= req.user;
+
+    const note = await createNote(id, title, text, createdAt, modifiedAt, user);
+
     res.status(200).json({ status: "succes", message: "Note added successfully", note });
   } catch (error) {
     console.error("Error adding note", error);
@@ -89,7 +95,7 @@ async function updateSingleNote(req, res) {
 async function deleteSingleNote(req, res) {
   try {
     const nodeID = req.params.id;
-    
+
     if (!nodeID) {
       console.log("Missing ID parameter");
       return res.status(400).json({ error: "Missing ID parameter" });
