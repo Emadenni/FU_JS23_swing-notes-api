@@ -161,7 +161,7 @@
  *               error: "Error retrieving the note"
  *
  *   put:
- *     summary: Update a single note
+ *     summary: Update a single note (title or text or both)
  *     description: Update a single note in the database by its ID. Requires a valid JWT token for access. Include the token in the Authorization header as 'Bearer <token>'.
  *     tags:
  *       - Notes
@@ -177,7 +177,7 @@
  *       - in: body
  *         name: Note
  *         required: true
- *         description: New title and text for the note
+ *         description: New title or text for the note
  *         schema:
  *           type: object
  *           properties:
@@ -203,11 +203,11 @@
  *                 user: "username" 
  *                 _id: "avb123" 
  *       '400':
- *         description: Title and text are required
+ *         description: Title or text are required
  *         content:
  *           application/json:
  *             example:
- *               error: Title and text are required
+ *               error: Title or text are required
   *       '401':
  *         description: Invalid access. Invalid token.
  *         content:
@@ -269,9 +269,9 @@
  *             example:
  *               error: "Internal server error"
  *
-* /api/notes/search:
+ * /api/notes/search?title=query:
  *   get:
- *     summary: Search among notes by title
+ *     summary: Search among notes by title (even partial).
  *     description: |
  *       Searches among notes in the database based on the provided title. The search is case-insensitive.
  *     tags:
@@ -284,7 +284,7 @@
  *         required: true
  *         schema:
  *           type: string
- *         description: The title to search for.(ex. /search?title=query)
+ *         description: The title to search for.
  *     responses:
  *       '200':
  *         description: A list of notes matching the search criteria.
@@ -298,8 +298,6 @@
  *                   example: success
  *                 result:
  *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/Note'
  *             example:
  *               status: success
  *               result:
@@ -320,6 +318,78 @@
  *                 error:
  *                   type: string
  *                   example: Title parameter is required and cannot be empty
+ *       '401':
+ *         description: Invalid access. Invalid token.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "Access denied! Token is required"
+ *       '404':
+ *         description: No notes found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "No notes found"
+ *       '500':
+ *         description: Internal server error. Error searching notes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Error searching notes
+ * /api/notes/search?user=query:
+ *   get:
+ *     summary: Search among notes by user (even partial).
+ *     description: |
+ *       Searches among notes in the database based on the provided user. The search is case-insensitive.
+ *     tags:
+ *       - Notes
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: user
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The user to search for.
+ *     responses:
+ *       '200':
+ *         description: A list of notes matching the search criteria.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 result:
+ *                   type: array
+
+ *             example:
+ *               status: success
+ *               result:
+ *                 - id: "1"
+ *                   title: "Found Note"
+ *                   text: "This is the result"
+ *                   createdAt: "2024-04-27T12:00:00Z"
+ *                   modifiedAt: "2024-04-28T12:00:00Z"
+ *                   user: "username" 
+ *                   _id: "avb123" 
+ *       '400':
+ *         description: Bad request. The 'user' parameter is missing or empty.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: User parameter is required and cannot be empty
   *       '401':
  *         description: Invalid access. Invalid token.
  *         content:
@@ -328,6 +398,12 @@
  *               error: "Access denied! Token is required"
   *       '404':
  *         description: No notes found.
+ *         content:
+ *           application/json:
+ *             example:
+ *               error: "No notes found"
+  *       '418':
+ *         description: User not found.
  *         content:
  *           application/json:
  *             example:
@@ -353,10 +429,11 @@ const {
   deleteSingleNote,
 } = require("../controllers/notes-controllers");
 const { auth } = require("./../middleware/auth");
-const { searchAmongNotes } = require("../controllers/search-controller");
+const { searchAmongNotes, searchAmongNotesByUser } = require("../controllers/search-controller");
 const router = Router();
 
 router.get("/search", auth, searchAmongNotes);
+router.get("/searchByUSer", auth, searchAmongNotesByUser);
 router.post("/", auth, addNote);
 router.get("/", auth, getAllNotes);
 router.get("/:id", auth, getSingleNote);

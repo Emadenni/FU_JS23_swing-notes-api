@@ -27,7 +27,16 @@ async function getNoteByID(noteID) {
     const noteByID = await db.findOne({ id: noteID });
     return noteByID || null;
   } catch (error) {
-    console.error("Error getting not");
+    console.error("Error getting note");
+    throw error;
+  }
+}
+async function getNotesByUser(user) {
+  try {
+    const noteByUser = await db.findOne({ user: user });
+    return noteByUser || null;
+  } catch (error) {
+    console.error("Error getting notes");
     throw error;
   }
 }
@@ -51,7 +60,7 @@ async function removeNoteByID(noteToDelete) {
   }
 }
 
-async function searchNotesByTitle(query) {
+async function searchNotesByQuery(query) {
   try {
     const notes = await db.find(query);
 
@@ -68,5 +77,6 @@ module.exports = {
   getNoteByID,
   modifiedNoteByID,
   removeNoteByID,
-  searchNotesByTitle,
+  searchNotesByQuery,
+  getNotesByUser
 };

@@ -73,8 +73,8 @@ async function updateSingleNote(req, res) {
     const noteID = req.params.id;
     const { newTitle, newText } = req.body;
 
-    if (!newTitle || !newText) {
-      console.error("Title and text are required");
+    if (!newTitle && !newText) {
+      console.error("Title or text are required");
       return res.status(400).json({ error: "Title and text are required" });
     }
 

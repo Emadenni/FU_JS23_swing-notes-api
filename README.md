@@ -20,10 +20,11 @@ http://localhost:3001/api/api-docs/
 | /api/notes{id}    | PUT    | Update a single note        |
 | /api/notes{id}    | DELETE | Delete a single note        |
 | /api/notes/search | GET    | Search among notes by title |
+| /api/notes/search | GET    | Search among notes by user  |
 | /api/user         | POST   | Create an account           |
 | /api/user         | POST   | Login                       |
 
-## Postman 
+## Postman
 
 You can find the Postman json file to import the collection among the repository's files.
 

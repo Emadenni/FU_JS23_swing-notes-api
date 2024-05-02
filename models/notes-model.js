@@ -10,7 +10,7 @@ async function createNote(id, title, text, createdAt, modifiedAt, user) {
       text,
       createdAt,
       modifiedAt: null,
-      user
+      user,
     };
   } catch (error) {
     console.error("Error creating user ", error);
@@ -42,13 +42,18 @@ async function fetchNoteByID(noteID) {
 async function updateNote(nodeID, newTitle, newText) {
   try {
     const noteToUpdate = await getNoteByID(nodeID);
-  
+
     if (!noteToUpdate) {
       return null;
     }
+    
+    if (newTitle) {
+      noteToUpdate.title = newTitle;
+    }
 
-    noteToUpdate.title = newTitle;
-    noteToUpdate.text = newText;
+    if (newText) {
+      noteToUpdate.text = newText;
+    }
     noteToUpdate.modifiedAt = new Date();
 
     await modifiedNoteByID(noteToUpdate);
@@ -62,9 +67,8 @@ async function updateNote(nodeID, newTitle, newText) {
 
 async function deleteNote(nodeID) {
   try {
-
     if (!nodeID) {
-     return null
+      return null;
     }
 
     const noteToDelete = await getNoteByID(nodeID);
@@ -74,7 +78,7 @@ async function deleteNote(nodeID) {
     }
 
     const deletedNote = await removeNoteByID(noteToDelete);
-    
+
     return deletedNote;
   } catch (error) {
     console.error("Error deleting the note", error);
